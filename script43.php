@@ -29,8 +29,8 @@ if(isset($_POST['ok'])) {
 
 ?>
 
+<script language="JavaScript"> 
 /* Este JavaScript nos devuelve al formulario. Llegaremos  */
 /* aquí en caso de que se haya pulsado el botón "Cancelar" */
-<script language="JavaScript"> 
 window.self.location="form43.php"; 
 </script> 

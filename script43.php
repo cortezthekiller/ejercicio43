@@ -14,10 +14,13 @@ if(isset($_POST['ok'])) {
 
    mysql_select_db ($mysql_db, $link);
 
+   /* Componemos fecha_nac en formato DATE a partir del día, mes y año */
+   $fecha_nac = $_POST['year']."-".$_POST['month']."-".$_POST['day'];
+
    $query  = "UPDATE ".$table." SET nombre='".$_POST['nombre']."' ,";
    $query .= "apellido1='".$_POST['apellido1']."' ,";
    $query .= "apellido2='".$_POST['apellido2']."' ,";
-   $query .= "fecha_nac='".$_POST['fecha_nac']."' ,";
+   $query .= "fecha_nac='".$fecha_nac."' ,";
    $query .= "repetidor='".$_POST['repetidor']."' ";
    $query .= "WHERE dni='".$_POST['dni']."'";
 

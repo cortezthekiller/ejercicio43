@@ -20,7 +20,8 @@ echo "<body>";
 
 /* El formulario inicial manda los datos a este mismo script */
 /* Comprobar si anteriormente se ha elegido a un alumno en el formulario */ 
-if(isset($_POST['enviar'])) {
+if(isset($_POST['enviar']) && $_POST['alumno']) {
+
    /* Mostrar los datos del alumno seleccionado */
    echo "<form name='modificar_datos' method='POST' action='script43.php'>";
    echo "<table align='center' border='1' bgcolor='#F0FFFF'>";
@@ -56,18 +57,62 @@ if(isset($_POST['enviar'])) {
    $input  = "<input type='text' name='nombre' value='";
    $input .= mysql_result($result, 0, 1)."'/>";
    echo "<td>".$input."</td>"; /* nombre */
-   $input  = "<input type='text' name='fecha_nac' value='";
-   $input .= mysql_result($result, 0, 4)."'/>";
-   echo "<td>".$input."</td>"; /* fecha_nac */
+
+
+   /* Extraer el dia, mes y año del campo fecha_nac (tipo DATE)    */
+   /* $fecha[0] = year, $fecha[1] = month, $fecha[2] = day         */
+   $fecha = explode("-", mysql_result($result, 0, 4));
+
+   /* Mostrar tres desplegables para el día, mes y año de nacimiento.  */
+   /* En los desplegables aparecerá por defecto la fecha de nacimiento */
+   /* del alumno seleccionado (atributo 'selected' del option.         */
+   $select_day = "<select name='day'>";
+
+   for($day=1; $day<32; $day++) {
+      if($day == $fecha[2])
+         $select_day .= "<option selected='selected'>".$day."</option>";
+      else
+         $select_day .= "<option>".$day."</option>";
+   }
+   $select_day .= "</select>";
+   
+   $select_month = "<select name='month'>";
+
+   for($month=1; $month<13; $month++) {
+      if($month == $fecha[1])
+         $select_month .= "<option selected='selected'>".$month."</option>";
+      else
+         $select_month .= "<option>".$month."</option>";
+   }
+   $select_month .= "</select>";
+
+   $select_year = "<select name='year'>";
+
+   for($year=1960; $year<2013; $year++) {
+      if($year == $fecha[0])
+         $select_year .= "<option selected='selected'>".$year."</option>";
+      else
+         $select_year .= "<option>".$year."</option>";
+   }
+   $select_year .= "</select>";
+
+   /* Select para día-mes-año de nacimiento */
+   echo "<td>".$select_day."de".$select_month."del".$select_year."</td>";
+
+   /* Input para el campo 'repetidor' */
    $input  = "<input type='text' name='repetidor' value='";
    $input .= mysql_result($result, 0, 5)."'/>";
    echo "<td>".$input."</td>"; /* repetidor */
    echo "</tr>";
    echo "</table>";
+
+   /* Botones para submitir el action a 'script43.php' */
    echo "<p style='text-align: center;'>Guardar los cambios&nbsp";
    echo "<input type='submit' name='ok' value='OK'/>";
    echo "<input type='submit' name='cancel' value='Cancel'/></p>";
    echo "</form>";
+   echo "</body>";
+   echo "</html>";
 
    mysql_free_result($result);
    mysql_close($link);
